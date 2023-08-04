@@ -11,9 +11,17 @@ namespace Kombox.DataAccess.Repository
         {
             _db = db;
         }
+        
         public void Save()
         {
             _db.SaveChanges();
+        }
+
+        public void Update(int id, Category category)
+        {
+            var Category = _db.Categories.FirstOrDefault(u => u.CategoryId == id);
+            Category.Name = category.Name;
+           
         }
     }
 }

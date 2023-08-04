@@ -1,4 +1,5 @@
-﻿using Kombox.DataAccess.Repository.Interfaces;
+﻿using Kombox.DataAccess.Repository;
+using Kombox.DataAccess.Repository.Interfaces;
 using Kombox.Models.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,9 +17,6 @@ namespace Kombox.API.Controllers
             _unitOfWork = unitOfWork;
         }
 
-
-
-        // GET: api/<CategoryController>
         [HttpGet]
         public IActionResult Get()
         {
@@ -42,32 +40,132 @@ namespace Kombox.API.Controllers
                     Message = ex.Message
                 });
             }
-            
+
         }
 
-        // GET api/<CategoryController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public IActionResult Get(int id)
         {
-            return "value";
+            try
+            {
+                var Category = _unitOfWork.categoryRepository.Get(u => u.CategoryId == id);
+
+                return Ok(new
+                {
+                    status = true,
+                    category = Category
+                });
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(new
+                {
+                    status = false,
+                    Message = ex.Message,
+                    Error = "Object not finded",
+                });
+            }
         }
 
         // POST api/<CategoryController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Post([FromBody] Category category)
         {
+            try
+            {
+                _unitOfWork.categoryRepository.Add(category);
+                _unitOfWork.Save();
+                return Ok(new
+                {
+                    status = true,
+                    category = category,
+                });
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(new
+                {
+                    status = false,
+                    message = ex.Message,
+                });
+
+            }
         }
 
-        // PUT api/<CategoryController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<IActionResult> Put(int id, [FromBody] Category category)
         {
+            try
+            {
+                var existingCategory =  _unitOfWork.categoryRepository.Get(u => u.CategoryId == id);
+               
+                _unitOfWork.categoryRepository.Update(id,category);
+                _unitOfWork.Save();
+
+                return Ok(new
+                {
+                    StatusCode = 200,
+                    Message = "Category updated successfully."
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    StatusCode = 500,
+                    Message = "An error occurred while updating the category.",
+                    Error = ex.Message
+                });
+            }
         }
 
-        // DELETE api/<CategoryController>/5
+
+
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
+            try
+            {
+                var category = _unitOfWork.categoryRepository.Get(u => u.CategoryId == id);
+
+                if (category == null)
+                {
+                    return NotFound(new
+                    {
+                        StatusCode = 404,
+                        message = "Category not found.",
+                    });
+                }
+
+                _unitOfWork.categoryRepository.Remove(category);
+                _unitOfWork.Save();
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    StatusCode = 500,
+                    message = "An error occurred while processing the request.",
+                    error = ex.Message,
+                });
+            }
         }
+
     }
 }
+
+
+
+//var Category = _unitOfWork.categoryRepository.Get(u => u.CategoryId == id);
+
+//_unitOfWork.categoryRepository.Remove(Category);
+//_unitOfWork.Save();
+//return Ok(new
+//{
+//    StatusCode = 200,
+//});
+
