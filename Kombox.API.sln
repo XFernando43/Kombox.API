@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33815.320
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kombox.API", "Kombox.API\Kombox.API.csproj", "{6C8F7BCF-3F06-460A-AB5E-66B610DBECDA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6C8F7BCF-3F06-460A-AB5E-66B610DBECDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C8F7BCF-3F06-460A-AB5E-66B610DBECDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C8F7BCF-3F06-460A-AB5E-66B610DBECDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C8F7BCF-3F06-460A-AB5E-66B610DBECDA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {99A50C03-EB16-4307-B981-7564147DE9D0}
+	EndGlobalSection
+EndGlobal
