@@ -14,8 +14,8 @@ namespace Kombox.DataAccess.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Category>().HasData(
-                new Category { CategoryId = 1, Name = "Action" },
-                new Category { CategoryId = 2, Name = "Action" }
+                new Category { CategoryId = 1, Name = "HOME" },
+                new Category { CategoryId = 2, Name = "BITCH" }
                 );
         }
     }

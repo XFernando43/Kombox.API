@@ -1,8 +1,20 @@
+using Kombox.DataAccess.Data;
+using Kombox.DataAccess.Repository;
+using Kombox.DataAccess.Repository.Interfaces;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
+
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(
+     builder.Configuration.GetConnectionString("DafultConnection")
+    ));
+
+builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
