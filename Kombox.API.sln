@@ -5,6 +5,10 @@ VisualStudioVersion = 17.6.33815.320
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kombox.API", "Kombox.API\Kombox.API.csproj", "{6C8F7BCF-3F06-460A-AB5E-66B610DBECDA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kombox.DataAccess", "Kombox.Data\Kombox.DataAccess.csproj", "{18E509D0-93EB-4FDA-B146-96575688ED8A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kombox.Models", "Kombox.Models\Kombox.Models.csproj", "{CD8B572F-64B0-407A-B836-6400C20A8741}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{6C8F7BCF-3F06-460A-AB5E-66B610DBECDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6C8F7BCF-3F06-460A-AB5E-66B610DBECDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6C8F7BCF-3F06-460A-AB5E-66B610DBECDA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18E509D0-93EB-4FDA-B146-96575688ED8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18E509D0-93EB-4FDA-B146-96575688ED8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18E509D0-93EB-4FDA-B146-96575688ED8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18E509D0-93EB-4FDA-B146-96575688ED8A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD8B572F-64B0-407A-B836-6400C20A8741}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD8B572F-64B0-407A-B836-6400C20A8741}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD8B572F-64B0-407A-B836-6400C20A8741}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD8B572F-64B0-407A-B836-6400C20A8741}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
