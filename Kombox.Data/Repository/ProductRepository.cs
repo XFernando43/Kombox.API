@@ -1,6 +1,7 @@
 ﻿using Kombox.DataAccess.Data;
 using Kombox.DataAccess.Repository.Interfaces;
 using Kombox.Models.Models;
+using Kombox.Models.Request;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,7 @@ namespace Kombox.DataAccess.Repository
             _db.SaveChanges();
         }
 
-        public void Update(int id, Product product)
+        public void Update(int id, ProductRequest product)
         {
             try
             {

@@ -12,10 +12,8 @@ namespace Kombox.Models.Request
 {
     public class ProductRequest
     {
-        [Required]
         public string Name { get; set; }
         public string? Description { get; set; }
-        [Required]
         public double Price { get; set; }
         public int CategoryId { get; set; }
     }
