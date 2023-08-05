@@ -10,6 +10,7 @@ namespace Kombox.DataAccess.Data
         }
 
             public DbSet<Category> Categories { get; set; }
+            public DbSet<Product> Products { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -17,6 +18,12 @@ namespace Kombox.DataAccess.Data
                 new Category { CategoryId = 1, Name = "HOME" },
                 new Category { CategoryId = 2, Name = "BITCH" }
                 );
+            modelBuilder.Entity<Product>().HasData(
+                new Product { ProductId = 1, Name = "Collar", Description = "Collar de Fenix", Price = 100 },
+                new Product { ProductId = 2, Name = "Brazalate", Description = "Brazalete de Thanos", Price = 100 },
+                new Product { ProductId = 3, Name = "Anillo", Description = "Anillo del Inifinito", Price = 100 }
+            
+            );
         }
     }
 }

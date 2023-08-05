@@ -12,12 +12,13 @@ namespace Kombox.DataAccess.Repository
     {
         ApplicationDbContext _db;
         public ICategoryRepository categoryRepository { get; set; }
-
+        public IProductRepository productRepository { get; set; }
 
         public UnitOfWork(ApplicationDbContext db)
         {
             _db = db;
             categoryRepository = new CategoryRepository(_db);
+            productRepository = new ProductRepository(_db);
         }
 
         public void Save()
