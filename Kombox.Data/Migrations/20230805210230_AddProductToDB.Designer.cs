@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Kombox.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230805174533_AddProductToDb")]
-    partial class AddProductToDb
+    [Migration("20230805210230_AddProductToDB")]
+    partial class AddProductToDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -45,12 +45,12 @@ namespace Kombox.DataAccess.Migrations
                         new
                         {
                             CategoryId = 1,
-                            Name = "HOME"
+                            Name = "Jelwey"
                         },
                         new
                         {
                             CategoryId = 2,
-                            Name = "BITCH"
+                            Name = "Gaming"
                         });
                 });
 

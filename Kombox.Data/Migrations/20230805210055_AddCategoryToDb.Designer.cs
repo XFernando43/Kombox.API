@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Kombox.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230804220934_AddCategoryToDb")]
+    [Migration("20230805210055_AddCategoryToDb")]
     partial class AddCategoryToDb
     {
         /// <inheritdoc />
@@ -45,12 +45,12 @@ namespace Kombox.DataAccess.Migrations
                         new
                         {
                             CategoryId = 1,
-                            Name = "HOME"
+                            Name = "Jelwey"
                         },
                         new
                         {
                             CategoryId = 2,
-                            Name = "BITCH"
+                            Name = "Gaming"
                         });
                 });
 #pragma warning restore 612, 618

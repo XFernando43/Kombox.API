@@ -32,13 +32,16 @@ namespace Kombox.DataAccess.Repository
                 {
                     throw new ArgumentException("Product not found with the provided ID.");
                 }
-                
+
                 // Actualizar solo los campos que se hayan enviado en el modelo
                 productFromDb.Name = product.Name ?? productFromDb.Name;
                 productFromDb.Description = product.Description ?? productFromDb.Description;
                 productFromDb.Price = product.Price;
-                
+                productFromDb.CategoryId = product.CategoryId;
+
                 _db.SaveChanges();
+
+
             }
             catch (Exception ex)
             {

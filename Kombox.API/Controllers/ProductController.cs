@@ -1,5 +1,7 @@
 ﻿using Kombox.DataAccess.Repository.Interfaces;
 using Kombox.Models.Models;
+using Kombox.Models.Request;
+using Kombox.Models.Response;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Kombox.API.Controllers
@@ -19,8 +21,10 @@ namespace Kombox.API.Controllers
         {
             try
             {
+                List<Product> products = _unitOfWork.productRepository
+                    .GetAll(includeProperties: "Category") // Aquí se especifica que se debe cargar la propiedad de navegación "Category" junto con cada producto
+                    .ToList();
 
-                List<Product> products = _unitOfWork.productRepository.GetAll().ToList();
                 return Ok(new
                 {
                     status = true,
@@ -53,16 +57,26 @@ namespace Kombox.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] Product product)
+        public IActionResult Post([FromBody] ProductRequest product)
         {
             try
             {
-                _unitOfWork.productRepository.Add(product);
+                var category = _unitOfWork.categoryRepository.Get(u => u.CategoryId == product.CategoryId);
+                Product ProductAux = new Product
+                {
+
+                    Name = product.Name,
+                    Description = product.Description,
+                    Price = product.Price,
+                    CategoryId = product.CategoryId,
+                    Category = category,
+                };
+                _unitOfWork.productRepository.Add(ProductAux);
                 _unitOfWork.Save();
                 return Ok(new
                 {
                     status = true,
-                    Product = product,
+                    Product = ProductAux,
                     Message = "Product Save it"
                 });
             }
@@ -75,52 +89,52 @@ namespace Kombox.API.Controllers
                 });
             }
         }
-        [HttpPatch]
-        public IActionResult UpdateProduct(int id, [FromBody] Product product)
-        {
-            try
-            {
-                _unitOfWork.productRepository.Update(id, product);
-                _unitOfWork.Save();
-                return Ok(new
-                {
-                    status=true,
-                    Product = product,
-                    message="Product Update It"
-                });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new
-                {
-                    status = false,
-                    message = ex.Message
-                }) ;
-            }
-        }
-        [HttpDelete]
-        public IActionResult DeleteProduct(int id)
-        {
-            try
-            {
-                var product = _unitOfWork.productRepository.Get(u=>u.ProductId == id);
-                _unitOfWork.productRepository.Remove(product);
-                _unitOfWork.Save();
-                return Ok(new
-                {
-                    status = true,
-                    Product = product,
-                    message = "Delete It"
-                });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new
-                {
-                    status = false,
-                    message = ex.Message
-                });
-            }
-        }
+        //[HttpPatch]
+        //public IActionResult UpdateProduct(int id, [FromBody] ProductRequest product)
+        //{
+        //    try
+        //    {
+        //        _unitOfWork.productRepository.Update(id, product);
+        //        _unitOfWork.Save();
+        //        return Ok(new
+        //        {
+        //            status=true,
+        //            Product = product,
+        //            message="Product Update It"
+        //        });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(new
+        //        {
+        //            status = false,
+        //            message = ex.Message
+        //        }) ;
+        //    }
+        //}
+        //[HttpDelete]
+        //public IActionResult DeleteProduct(int id)
+        //{
+        //    try
+        //    {
+        //        var product = _unitOfWork.productRepository.Get(u=>u.ProductId == id);
+        //        _unitOfWork.productRepository.Remove(product);
+        //        _unitOfWork.Save();
+        //        return Ok(new
+        //        {
+        //            status = true,
+        //            Product = product,
+        //            message = "Delete It"
+        //        });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(new
+        //        {
+        //            status = false,
+        //            message = ex.Message
+        //        });
+        //    }
+        //}
     }
 }

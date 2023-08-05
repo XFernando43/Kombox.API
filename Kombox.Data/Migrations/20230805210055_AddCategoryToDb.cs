@@ -7,34 +7,31 @@
 namespace Kombox.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class AddProductToDb : Migration
+    public partial class AddCategoryToDb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Products",
+                name: "Categories",
                 columns: table => new
                 {
-                    ProductId = table.Column<int>(type: "int", nullable: false)
+                    CategoryId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Price = table.Column<double>(type: "float", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Products", x => x.ProductId);
+                    table.PrimaryKey("PK_Categories", x => x.CategoryId);
                 });
 
             migrationBuilder.InsertData(
-                table: "Products",
-                columns: new[] { "ProductId", "Description", "Name", "Price" },
+                table: "Categories",
+                columns: new[] { "CategoryId", "Name" },
                 values: new object[,]
                 {
-                    { 1, "Collar de Fenix", "Collar", 100.0 },
-                    { 2, "Brazalete de Thanos", "Brazalate", 100.0 },
-                    { 3, "Anillo del Inifinito", "Anillo", 100.0 }
+                    { 1, "Jelwey" },
+                    { 2, "Gaming" }
                 });
         }
 
@@ -42,7 +39,7 @@ namespace Kombox.DataAccess.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Products");
+                name: "Categories");
         }
     }
 }
