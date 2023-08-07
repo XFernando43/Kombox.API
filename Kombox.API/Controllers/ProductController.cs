@@ -3,6 +3,7 @@ using Kombox.Models.Models;
 using Kombox.Models.Request;
 using Kombox.Models.Response;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Kombox.API.Controllers
 {
@@ -113,9 +114,25 @@ namespace Kombox.API.Controllers
             }
         }
         [HttpDelete]
-        public IActionResult DeleteProduct(int id)
+
+        public dynamic DeleteProduct(int id)
         {
-            try
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            var rtoken = Jwt.ValidarToken(identity);
+
+            if (rtoken.Success==false) { return rtoken; }
+
+            Usuario usuario = rtoken.Result;
+
+            if (usuario.Rol != "Admin")
+            {
+                return BadRequest(new
+                {
+                    status = false,
+                    message = "U don't have access to do this"
+                });
+            }
+            else
             {
                 var product = _unitOfWork.productRepository.Get(u => u.ProductId == id);
                 _unitOfWork.productRepository.Remove(product);
@@ -127,14 +144,27 @@ namespace Kombox.API.Controllers
                     message = "Delete It"
                 });
             }
-            catch (Exception ex)
-            {
-                return BadRequest(new
-                {
-                    status = false,
-                    message = ex.Message
-                });
-            }
+
+            //try
+            //{
+            //    var product = _unitOfWork.productRepository.Get(u => u.ProductId == id);
+            //    _unitOfWork.productRepository.Remove(product);
+            //    _unitOfWork.Save();
+            //    return Ok(new
+            //    {
+            //        status = true,
+            //        Product = product,
+            //        message = "Delete It"
+            //    });
+            //}
+            //catch (Exception ex)
+            //{
+            //    return BadRequest(new
+            //    {
+            //        status = false,
+            //        message = ex.Message
+            //    });
+            //}
         }
     }
 }
