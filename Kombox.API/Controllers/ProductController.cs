@@ -2,6 +2,7 @@
 using Kombox.Models.Models;
 using Kombox.Models.Request;
 using Kombox.Models.Response;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -114,7 +115,7 @@ namespace Kombox.API.Controllers
             }
         }
         [HttpDelete]
-
+       
         public dynamic DeleteProduct(int id)
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;
