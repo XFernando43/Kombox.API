@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Kombox.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230807235907_AddtablesToDB")]
-    partial class AddtablesToDB
+    [Migration("20230808164902_AddFIxedTableRolUserToDb")]
+    partial class AddFIxedTableRolUserToDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -109,6 +109,47 @@ namespace Kombox.DataAccess.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Kombox.Models.Models.RolUser", b =>
+                {
+                    b.Property<int?>("RolId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("RolId"));
+
+                    b.Property<string>("Access")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RolName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("RolId");
+
+                    b.ToTable("RolUsers");
+
+                    b.HasData(
+                        new
+                        {
+                            RolId = 1,
+                            Access = "All",
+                            RolName = "Admin"
+                        },
+                        new
+                        {
+                            RolId = 2,
+                            Access = "lower",
+                            RolName = "Employee"
+                        },
+                        new
+                        {
+                            RolId = 3,
+                            Access = "public",
+                            RolName = "Client"
+                        });
+                });
+
             modelBuilder.Entity("Kombox.Models.Models.Usuario", b =>
                 {
                     b.Property<int>("IdUser")
@@ -117,9 +158,8 @@ namespace Kombox.DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdUser"));
 
-                    b.Property<string>("Rol")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("IdRol")
+                        .HasColumnType("int");
 
                     b.Property<string>("password")
                         .IsRequired()
@@ -130,6 +170,8 @@ namespace Kombox.DataAccess.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("IdUser");
+
+                    b.HasIndex("IdRol");
 
                     b.ToTable("Usuarios");
                 });
@@ -143,6 +185,17 @@ namespace Kombox.DataAccess.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("Kombox.Models.Models.Usuario", b =>
+                {
+                    b.HasOne("Kombox.Models.Models.RolUser", "RolUser")
+                        .WithMany()
+                        .HasForeignKey("IdRol")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("RolUser");
                 });
 #pragma warning restore 612, 618
         }

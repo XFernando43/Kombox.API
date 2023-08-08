@@ -112,8 +112,8 @@ namespace Kombox.API.Controllers
                 });
             }
         }
-        [HttpDelete]
 
+        [HttpDelete]
         public dynamic DeleteProduct(int id)
         {
 
@@ -124,28 +124,28 @@ namespace Kombox.API.Controllers
 
             Usuario usuario = rtoken.Result;
 
-            if (usuario.Rol != "Admin")
-            {
-                return BadRequest(new
-                {
-                    status = false,
-                    message = "U don't have access to do this"
-                });
-            }
-            else
-            {
-                var product = _unitOfWork.productRepository.Get(u => u.ProductId == id);
-                _unitOfWork.productRepository.Remove(product);
-                _unitOfWork.Save();
-                return Ok(new
-                {
-                    status = true,
-                    Product = product,
-                    message = "Delete It"
-                });
-            }
+            //if (usuario.Rol != "Admin")
+            //{
+            //    return BadRequest(new
+            //    {
+            //        status = false,
+            //        message = "U don't have access to do this"
+            //    });
+            //}
+            //else
+            //{
+            //    var product = _unitOfWork.productRepository.Get(u => u.ProductId == id);
+            //    _unitOfWork.productRepository.Remove(product);
+            //    _unitOfWork.Save();
+            //    return Ok(new
+            //    {
+            //        status = true,
+            //        Product = product,
+            //        message = "Delete It"
+            //    });
+            //}
 
-
+            return null;
         }
     }
 }

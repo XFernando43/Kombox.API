@@ -11,6 +11,6 @@ namespace Kombox.Models.Request
     {
         public string usuario { get; set; }
         public string password { get; set; }
-        public string Rol { get; set; }
+        public int RolId { get; set; }
     }
 }

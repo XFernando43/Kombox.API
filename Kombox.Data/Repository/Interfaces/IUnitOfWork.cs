@@ -12,6 +12,7 @@ namespace Kombox.DataAccess.Repository.Interfaces
         IProductRepository productRepository { get; set; }
         IUserRepository userRepository { get; set; }
         IAuthorizationRepository authorizationRepository { get; set; }
+        IRolRepository rolRepository { get; set; }
         void Save();
     }
 }

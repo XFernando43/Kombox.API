@@ -2,13 +2,7 @@
 using Kombox.DataAccess.Repository.Interfaces;
 using Kombox.Models.Models;
 using Kombox.Models.Request;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
-using static Kombox.Models.Models.Jwt;
 
 namespace Kombox.DataAccess.Repository
 {
@@ -39,7 +33,8 @@ namespace Kombox.DataAccess.Repository
                 // Actualizar solo los campos que se hayan enviado en el modelo
                 userFromDb.usuario = user.usuario ?? userFromDb.usuario;
                 userFromDb.password = user.password ?? userFromDb.password;
-                userFromDb.Rol = user.Rol;
+                userFromDb.IdRol = user.RolId;
+
                 _db.SaveChanges();
             }
             catch (Exception ex)
@@ -65,7 +60,7 @@ namespace Kombox.DataAccess.Repository
 
                 var id = identity.Claims.FirstOrDefault(x => x.Type == "id")?.Value;
                 Usuario usuario = _db.Usuarios.FirstOrDefault(x => x.IdUser.ToString() == id);
-                    
+
                 return new ValidarTokenResult
                 {
                     Success = true,

@@ -4,6 +4,7 @@ using Kombox.DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Kombox.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230808162626_AddTablesToDb")]
+    partial class AddTablesToDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -108,13 +111,13 @@ namespace Kombox.DataAccess.Migrations
 
             modelBuilder.Entity("Kombox.Models.Models.RolUser", b =>
                 {
-                    b.Property<int?>("RolId")
+                    b.Property<int>("RolId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("RolId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RolId"));
 
-                    b.Property<string>("Access")
+                    b.Property<string>("Acess")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -130,19 +133,19 @@ namespace Kombox.DataAccess.Migrations
                         new
                         {
                             RolId = 1,
-                            Access = "All",
+                            Acess = "All",
                             RolName = "Admin"
                         },
                         new
                         {
                             RolId = 2,
-                            Access = "lower",
+                            Acess = "lower",
                             RolName = "Employee"
                         },
                         new
                         {
                             RolId = 3,
-                            Access = "public",
+                            Acess = "public",
                             RolName = "Client"
                         });
                 });

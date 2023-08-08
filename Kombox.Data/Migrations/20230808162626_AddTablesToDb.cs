@@ -7,7 +7,7 @@
 namespace Kombox.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class AddtablesToDB : Migration
+    public partial class AddTablesToDb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -26,18 +26,17 @@ namespace Kombox.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Usuarios",
+                name: "RolUsers",
                 columns: table => new
                 {
-                    IdUser = table.Column<int>(type: "int", nullable: false)
+                    RolId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    usuario = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Rol = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    RolName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Acess = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Usuarios", x => x.IdUser);
+                    table.PrimaryKey("PK_RolUsers", x => x.RolId);
                 });
 
             migrationBuilder.CreateTable(
@@ -62,6 +61,27 @@ namespace Kombox.DataAccess.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Usuarios",
+                columns: table => new
+                {
+                    IdUser = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    usuario = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IdRol = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Usuarios", x => x.IdUser);
+                    table.ForeignKey(
+                        name: "FK_Usuarios_RolUsers_IdRol",
+                        column: x => x.IdRol,
+                        principalTable: "RolUsers",
+                        principalColumn: "RolId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "Categories",
                 columns: new[] { "CategoryId", "Name" },
@@ -69,6 +89,16 @@ namespace Kombox.DataAccess.Migrations
                 {
                     { 1, "Jelwey" },
                     { 2, "Gaming" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "RolUsers",
+                columns: new[] { "RolId", "Acess", "RolName" },
+                values: new object[,]
+                {
+                    { 1, "All", "Admin" },
+                    { 2, "lower", "Employee" },
+                    { 3, "public", "Client" }
                 });
 
             migrationBuilder.InsertData(
@@ -85,6 +115,11 @@ namespace Kombox.DataAccess.Migrations
                 name: "IX_Products_CategoryId",
                 table: "Products",
                 column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Usuarios_IdRol",
+                table: "Usuarios",
+                column: "IdRol");
         }
 
         /// <inheritdoc />
@@ -98,6 +133,9 @@ namespace Kombox.DataAccess.Migrations
 
             migrationBuilder.DropTable(
                 name: "Categories");
+
+            migrationBuilder.DropTable(
+                name: "RolUsers");
         }
     }
 }

@@ -23,12 +23,11 @@ namespace Kombox.API.Controllers
         }
 
         [HttpGet]
-
         public IActionResult GetAll()
         {
             try
             {
-                List<Usuario> usuarios = _unitOfWork.userRepository.GetAll().ToList();
+                List<Usuario> usuarios = _unitOfWork.userRepository.GetAll(includeProperties: "RolUser").ToList();
                 if (usuarios == null || usuarios.Count == 0)
                 {
                     return Ok(new
@@ -56,6 +55,28 @@ namespace Kombox.API.Controllers
             }
         }
 
+        [HttpGet("{id}")]
+        public IActionResult GetId(int id)
+        {
+            try
+            {
+                var userFromDB = _unitOfWork.userRepository.Get(u => u.IdUser == id, includeProperties: "RolUser");
+                if(userFromDB == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    return Ok(new
+                    {
+                        status=true,
+                        usuario = userFromDB
+                    });
+                }
+            }catch(Exception ex) {
+                return BadRequest(ex.Message);
+            }
+        }
         [HttpPost]
         public IActionResult Post([FromBody] UserRequest request)
         {
@@ -66,7 +87,7 @@ namespace Kombox.API.Controllers
                 {
                     usuario = request.usuario,
                     password = request.password,
-                    Rol = request.Rol
+                    IdRol = request.RolId
 
                 };
                 _unitOfWork.userRepository.Add(usuarioAux);
