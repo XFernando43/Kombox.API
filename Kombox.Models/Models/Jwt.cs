@@ -31,13 +31,13 @@ namespace Kombox.Models.Models
                 }
 
                 var id = identity.Claims.FirstOrDefault(x => x.Type == "id")?.Value;
-                Usuario usuario = Usuario.DB().FirstOrDefault(x => x.IdUser == id);
+                //Usuario usuario = Usuario.DB().FirstOrDefault(x => x.IdUser == id);
 
                 return new ValidarTokenResult
                 {
                     Success = true,
                     Message = "exito",
-                    Result = usuario
+                    //Result = usuario
                 };
             }
             catch (Exception ex)

@@ -10,6 +10,7 @@ namespace Kombox.DataAccess.Repository.Interfaces
     {
         ICategoryRepository categoryRepository { get; set; }
         IProductRepository productRepository { get; set; }
+        IUserRepository userRepository { get; set; }
         void Save();
     }
 }

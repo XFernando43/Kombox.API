@@ -1,4 +1,6 @@
-﻿using Kombox.Models.Models;
+﻿using Kombox.DataAccess.Repository.Interfaces;
+using Kombox.Models.Models;
+using Kombox.Models.Request;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
@@ -13,10 +15,41 @@ namespace Kombox.API.Controllers
     public class UserController : ControllerBase
     {
         public IConfiguration _configuration { get; set; }
-        public UserController(IConfiguration configuration)
+        private readonly IUnitOfWork _unitOfWork;
+        public UserController(IConfiguration configuration, IUnitOfWork unitOfWork)
         {
             _configuration = configuration;
+            _unitOfWork = unitOfWork;
         }
+
+        [HttpPost]
+        public IActionResult Post([FromBody] UserRequest request)
+        {
+            try
+            {
+                
+                Usuario usuarioAux = new Usuario
+                {
+                    usuario = request.usuario,
+                    password = request.password,
+                    Rol = request.Rol
+                    
+                };
+                _unitOfWork.userRepository.Add(usuarioAux);
+                _unitOfWork.Save();
+                return Ok(new
+                {
+                    status = true,
+                    Product = usuarioAux,
+                    Message = "Product Save it"
+                });
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
 
         [HttpPost]
         [Route("login")]
@@ -27,17 +60,17 @@ namespace Kombox.API.Controllers
             string user = data.usuario.ToString();
             string password = data.password.ToString();
 
-            Usuario usuario = Usuario.DB().Where(x => x.usuario == user && x.password == password).FirstOrDefault();
+            //Usuario usuario = Usuario.DB().Where(x => x.usuario == user && x.password == password).FirstOrDefault();
 
-            if (usuario == null)
-            {
-                return new
-                {
-                    status = false,
-                    message = "Credenciales Incorrectas",
-                    results = ""
-                };
-            }
+            //if (usuario == null)
+            //{
+            //    return new
+            //    {
+            //        status = false,
+            //        message = "Credenciales Incorrectas",
+            //        results = ""
+            //    };
+            //}
 
             var jwt = _configuration.GetSection("JWT").Get<Jwt>();
 
@@ -46,8 +79,8 @@ namespace Kombox.API.Controllers
                 new Claim(JwtRegisteredClaimNames.Sub, jwt.Subject),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
-                new Claim("id",usuario.IdUser),
-                new Claim("usuario",usuario.usuario),
+                //new Claim("id",usuario.IdUser),
+                //new Claim("usuario",usuario.usuario),
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt.Key));
