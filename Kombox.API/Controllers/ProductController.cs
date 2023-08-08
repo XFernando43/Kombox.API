@@ -118,10 +118,11 @@ namespace Kombox.API.Controllers
        
         public dynamic DeleteProduct(int id)
         {
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            var rtoken = Jwt.ValidarToken(identity);
 
-            if (rtoken.Success==false) { return rtoken; }
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            var rtoken = _unitOfWork.authorizationRepository.ValidarToken(identity);
+
+            if (rtoken.Success == false) { return rtoken; }
 
             Usuario usuario = rtoken.Result;
 
@@ -146,26 +147,7 @@ namespace Kombox.API.Controllers
                 });
             }
 
-            //try
-            //{
-            //    var product = _unitOfWork.productRepository.Get(u => u.ProductId == id);
-            //    _unitOfWork.productRepository.Remove(product);
-            //    _unitOfWork.Save();
-            //    return Ok(new
-            //    {
-            //        status = true,
-            //        Product = product,
-            //        message = "Delete It"
-            //    });
-            //}
-            //catch (Exception ex)
-            //{
-            //    return BadRequest(new
-            //    {
-            //        status = false,
-            //        message = ex.Message
-            //    });
-            //}
+
         }
     }
 }

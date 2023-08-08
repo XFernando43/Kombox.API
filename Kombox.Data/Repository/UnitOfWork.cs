@@ -14,6 +14,7 @@ namespace Kombox.DataAccess.Repository
         public ICategoryRepository categoryRepository { get; set; }
         public IProductRepository productRepository { get; set; }
         public IUserRepository userRepository { get; set; }
+        public IAuthorizationRepository authorizationRepository { get; set; }
 
         public UnitOfWork(ApplicationDbContext db)
         {
@@ -21,6 +22,7 @@ namespace Kombox.DataAccess.Repository
             categoryRepository = new CategoryRepository(_db);
             productRepository = new ProductRepository(_db);
             userRepository = new UserRepository(_db);
+            authorizationRepository = new AuthorizationRepository(_db);
         }
 
         public void Save()
