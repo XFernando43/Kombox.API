@@ -62,8 +62,8 @@ namespace Kombox.API.Controllers
                 return BadRequest(new
                 {
                     status = false,
-                    Message = ex.Message,
                     Error = "Object not finded",
+                    Message = ex.Message,
                 });
             }
         }
