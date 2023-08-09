@@ -45,9 +45,31 @@ namespace Kombox.API.Controllers
                     status = false,
                     message = ex.Message
                 });
-               
+
             }
-            
+
+        }
+
+        [HttpPost]
+        public IActionResult Post([FromBody] ShoppingCart cart)
+        {
+            try
+            {
+                _unitOfWork.shoppingCartRepository.Add(cart);
+                _unitOfWork.Save();
+                return Ok(new
+                {
+                    status = true,
+                    Message = "Cart save it successfully"
+                });
+            }catch(Exception ex)
+            {
+                return BadRequest(new
+                {
+                    status = false,
+                    message = ex.Message
+                });
+            }
         }
 
     }
