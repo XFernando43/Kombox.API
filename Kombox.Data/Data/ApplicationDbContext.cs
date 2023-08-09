@@ -14,6 +14,7 @@ namespace Kombox.DataAccess.Data
         public DbSet<Product> Products { get; set; }
         public DbSet<RolUser> RolUsers { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<ShoppingCart> shoppingCarts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
