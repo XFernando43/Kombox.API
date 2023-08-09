@@ -123,29 +123,28 @@ namespace Kombox.API.Controllers
             if (rtoken.Success == false) { return rtoken; }
 
             Usuario usuario = rtoken.Result;
+            Console.WriteLine(usuario.ToString());
+            if (usuario.IdRol != 1)
+            {
+                return BadRequest(new
+                {
+                    status = false,
+                    message = "U don't have access to do this"
+                });
+            }
+            else
+            {
+                var product = _unitOfWork.productRepository.Get(u => u.ProductId == id);
+                _unitOfWork.productRepository.Remove(product);
+                _unitOfWork.Save();
+                return Ok(new
+                {
+                    status = true,
+                    Product = product,
+                    message = "Delete It"
+                });
+            }
 
-            //if (usuario.Rol != "Admin")
-            //{
-            //    return BadRequest(new
-            //    {
-            //        status = false,
-            //        message = "U don't have access to do this"
-            //    });
-            //}
-            //else
-            //{
-            //    var product = _unitOfWork.productRepository.Get(u => u.ProductId == id);
-            //    _unitOfWork.productRepository.Remove(product);
-            //    _unitOfWork.Save();
-            //    return Ok(new
-            //    {
-            //        status = true,
-            //        Product = product,
-            //        message = "Delete It"
-            //    });
-            //}
-
-            return null;
         }
     }
 }

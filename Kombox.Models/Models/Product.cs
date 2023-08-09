@@ -22,5 +22,7 @@ namespace Kombox.Models.Models
         public int CategoryId { get; set; }
         [ForeignKey("CategoryId")]
         public Category Category { get; set; }
+
+        public int Stock { get; set; }
     }
 }
