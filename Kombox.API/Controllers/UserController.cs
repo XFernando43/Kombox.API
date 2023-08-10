@@ -90,8 +90,22 @@ namespace Kombox.API.Controllers
                     IdRol = request.RolId
 
                 };
+                
+
                 _unitOfWork.userRepository.Add(usuarioAux);
                 _unitOfWork.Save();
+
+                ShoppingCart cartAux = new ShoppingCart
+                {
+                    IdUser = usuarioAux.IdUser,
+                    TotalPrice = 0
+                };
+
+                _unitOfWork.shoppingCartRepository.Add(cartAux);
+                _unitOfWork.Save();
+
+                
+
                 return Ok(new
                 {
                     status = true,

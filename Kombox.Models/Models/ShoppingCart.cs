@@ -7,7 +7,7 @@ namespace Kombox.Models.Models
     public partial class ShoppingCart
     {
         [Key]
-        public int ShoppingCartId { get; set; }
+        public int? ShoppingCartId { get; set; }
         
         public int IdUser { get; set; }
         [ForeignKey("IdUser")]
