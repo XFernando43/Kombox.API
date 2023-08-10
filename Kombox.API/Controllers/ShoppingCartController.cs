@@ -1,5 +1,6 @@
 ﻿using Kombox.DataAccess.Repository.Interfaces;
 using Kombox.Models.Models;
+using Kombox.Models.Request;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,6 +17,7 @@ namespace Kombox.API.Controllers
         }
 
         [HttpGet]
+        [Route("GetAll")]
         public ActionResult GetAll()
         {
             try
@@ -50,16 +52,50 @@ namespace Kombox.API.Controllers
 
         }
 
-        [HttpPost]
-        public IActionResult Post([FromBody] ShoppingCart cart)
+        [HttpGet("{id}")]
+        
+        public ActionResult GetShoppinCartByUserId(int id)
         {
             try
             {
-                _unitOfWork.shoppingCartRepository.Add(cart);
+                var cart = _unitOfWork.itemCartRepository.GetAll(x=>x.ShoppingCartId == id, includeProperties:"Product");
+
+                return Ok(new
+                {
+                    status = true,
+                    Cart = cart,
+                    Message = "Cart save it successfully"
+                });
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(new
+                {
+                    status = false,
+                    message = ex.Message
+                });
+            }
+        }
+
+        [HttpPost]
+        [Route("PostItemCart")]
+        public IActionResult Post([FromBody] ItemCartRequest item)
+        {
+            try
+            {
+                ItemCart aux = new ItemCart
+                {
+                    ProductId = item.ProductId,
+                    count = item.count,
+                    ShoppingCartId = item.ShoppingCartId,
+                };
+                _unitOfWork.itemCartRepository.Add(aux);
                 _unitOfWork.Save();
                 return Ok(new
                 {
                     status = true,
+                    item = item,
                     Message = "Cart save it successfully"
                 });
             }catch(Exception ex)

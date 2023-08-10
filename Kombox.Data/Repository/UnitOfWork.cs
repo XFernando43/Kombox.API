@@ -17,6 +17,7 @@ namespace Kombox.DataAccess.Repository
         public IAuthorizationRepository authorizationRepository { get; set; }
         public IRolRepository rolRepository { get; set; }
         public IShoppingCartRepository shoppingCartRepository { get; set; }
+        public IItemCartRepository itemCartRepository { get; set; }
 
         public UnitOfWork(ApplicationDbContext db)
         {
@@ -26,6 +27,7 @@ namespace Kombox.DataAccess.Repository
             userRepository = new UserRepository(_db);
             authorizationRepository = new AuthorizationRepository(_db);
             rolRepository = new RolRepository(_db);
+            itemCartRepository = new ItemCartRepository(_db);
             shoppingCartRepository = new ShoppingCartRepository(_db);
         }
 

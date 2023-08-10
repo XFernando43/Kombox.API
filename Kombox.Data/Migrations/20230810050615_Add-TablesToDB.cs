@@ -7,7 +7,7 @@
 namespace Kombox.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class AddTablesToDb : Migration
+    public partial class AddTablesToDB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -32,7 +32,7 @@ namespace Kombox.DataAccess.Migrations
                     RolId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RolName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Acess = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Access = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -48,7 +48,8 @@ namespace Kombox.DataAccess.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Price = table.Column<double>(type: "float", nullable: false),
-                    CategoryId = table.Column<int>(type: "int", nullable: false)
+                    CategoryId = table.Column<int>(type: "int", nullable: false),
+                    Stock = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -82,6 +83,53 @@ namespace Kombox.DataAccess.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "ShoppingCarts",
+                columns: table => new
+                {
+                    ShoppingCartId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IdUser = table.Column<int>(type: "int", nullable: false),
+                    TotalPrice = table.Column<double>(type: "float", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ShoppingCarts", x => x.ShoppingCartId);
+                    table.ForeignKey(
+                        name: "FK_ShoppingCarts_Usuarios_IdUser",
+                        column: x => x.IdUser,
+                        principalTable: "Usuarios",
+                        principalColumn: "IdUser",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ItemCarts",
+                columns: table => new
+                {
+                    ItemCartId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    count = table.Column<int>(type: "int", nullable: false),
+                    ShoppingCartId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ItemCarts", x => x.ItemCartId);
+                    table.ForeignKey(
+                        name: "FK_ItemCarts_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "ProductId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ItemCarts_ShoppingCarts_ShoppingCartId",
+                        column: x => x.ShoppingCartId,
+                        principalTable: "ShoppingCarts",
+                        principalColumn: "ShoppingCartId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "Categories",
                 columns: new[] { "CategoryId", "Name" },
@@ -93,7 +141,7 @@ namespace Kombox.DataAccess.Migrations
 
             migrationBuilder.InsertData(
                 table: "RolUsers",
-                columns: new[] { "RolId", "Acess", "RolName" },
+                columns: new[] { "RolId", "Access", "RolName" },
                 values: new object[,]
                 {
                     { 1, "All", "Admin" },
@@ -103,18 +151,44 @@ namespace Kombox.DataAccess.Migrations
 
             migrationBuilder.InsertData(
                 table: "Products",
-                columns: new[] { "ProductId", "CategoryId", "Description", "Name", "Price" },
+                columns: new[] { "ProductId", "CategoryId", "Description", "Name", "Price", "Stock" },
                 values: new object[,]
                 {
-                    { 1, 1, "Collar de Fenix", "Collar", 100.0 },
-                    { 2, 1, "Brazalete de Thanos", "Brazalate", 100.0 },
-                    { 3, 1, "Anillo del Inifinito", "Anillo", 100.0 }
+                    { 1, 1, "Collar de Fenix", "Collar", 100.0, 0 },
+                    { 2, 1, "Brazalete de Thanos", "Brazalate", 100.0, 0 },
+                    { 3, 1, "Anillo del Inifinito", "Anillo", 100.0, 0 }
                 });
+
+            migrationBuilder.InsertData(
+                table: "Usuarios",
+                columns: new[] { "IdUser", "IdRol", "password", "usuario" },
+                values: new object[,]
+                {
+                    { 1, 1, "123", "Fercho" },
+                    { 2, 1, "123", "German" },
+                    { 3, 1, "123", "Dai" },
+                    { 4, 1, "123", "Jorge" }
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ItemCarts_ProductId",
+                table: "ItemCarts",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ItemCarts_ShoppingCartId",
+                table: "ItemCarts",
+                column: "ShoppingCartId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_CategoryId",
                 table: "Products",
                 column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ShoppingCarts_IdUser",
+                table: "ShoppingCarts",
+                column: "IdUser");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Usuarios_IdRol",
@@ -126,13 +200,19 @@ namespace Kombox.DataAccess.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "ItemCarts");
+
+            migrationBuilder.DropTable(
                 name: "Products");
 
             migrationBuilder.DropTable(
-                name: "Usuarios");
+                name: "ShoppingCarts");
 
             migrationBuilder.DropTable(
                 name: "Categories");
+
+            migrationBuilder.DropTable(
+                name: "Usuarios");
 
             migrationBuilder.DropTable(
                 name: "RolUsers");

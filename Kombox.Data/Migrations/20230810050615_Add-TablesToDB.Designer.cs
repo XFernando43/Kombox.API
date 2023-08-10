@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Kombox.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230809212210_ProductToDB")]
-    partial class ProductToDB
+    [Migration("20230810050615_Add-TablesToDB")]
+    partial class AddTablesToDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -66,12 +66,17 @@ namespace Kombox.DataAccess.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
+                    b.Property<int>("ShoppingCartId")
+                        .HasColumnType("int");
+
                     b.Property<int>("count")
                         .HasColumnType("int");
 
                     b.HasKey("ItemCartId");
 
                     b.HasIndex("ProductId");
+
+                    b.HasIndex("ShoppingCartId");
 
                     b.ToTable("ItemCarts");
                 });
@@ -179,15 +184,23 @@ namespace Kombox.DataAccess.Migrations
 
             modelBuilder.Entity("Kombox.Models.Models.ShoppingCart", b =>
                 {
-                    b.Property<int>("ShoppingId")
+                    b.Property<int>("ShoppingCartId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ShoppingId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ShoppingCartId"));
 
-                    b.HasKey("ShoppingId");
+                    b.Property<int>("IdUser")
+                        .HasColumnType("int");
 
-                    b.ToTable("shoppingCarts");
+                    b.Property<double>("TotalPrice")
+                        .HasColumnType("float");
+
+                    b.HasKey("ShoppingCartId");
+
+                    b.HasIndex("IdUser");
+
+                    b.ToTable("ShoppingCarts");
                 });
 
             modelBuilder.Entity("Kombox.Models.Models.Usuario", b =>
@@ -214,6 +227,36 @@ namespace Kombox.DataAccess.Migrations
                     b.HasIndex("IdRol");
 
                     b.ToTable("Usuarios");
+
+                    b.HasData(
+                        new
+                        {
+                            IdUser = 1,
+                            IdRol = 1,
+                            password = "123",
+                            usuario = "Fercho"
+                        },
+                        new
+                        {
+                            IdUser = 2,
+                            IdRol = 1,
+                            password = "123",
+                            usuario = "German"
+                        },
+                        new
+                        {
+                            IdUser = 3,
+                            IdRol = 1,
+                            password = "123",
+                            usuario = "Dai"
+                        },
+                        new
+                        {
+                            IdUser = 4,
+                            IdRol = 1,
+                            password = "123",
+                            usuario = "Jorge"
+                        });
                 });
 
             modelBuilder.Entity("Kombox.Models.Models.ItemCart", b =>
@@ -224,7 +267,15 @@ namespace Kombox.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Kombox.Models.Models.ShoppingCart", "ShoppingCart")
+                        .WithMany()
+                        .HasForeignKey("ShoppingCartId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Product");
+
+                    b.Navigation("ShoppingCart");
                 });
 
             modelBuilder.Entity("Kombox.Models.Models.Product", b =>
@@ -236,6 +287,17 @@ namespace Kombox.DataAccess.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("Kombox.Models.Models.ShoppingCart", b =>
+                {
+                    b.HasOne("Kombox.Models.Models.Usuario", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("IdUser")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("Kombox.Models.Models.Usuario", b =>
