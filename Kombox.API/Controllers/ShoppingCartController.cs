@@ -28,7 +28,7 @@ namespace Kombox.API.Controllers
                     return Ok(new
                     {
                         status = true,
-                        Message = "not payments do it alredy"
+                        Message = "not payments do it alredy!!!"
                     });
                 }
                 else
@@ -91,7 +91,7 @@ namespace Kombox.API.Controllers
         public IActionResult Post([FromBody] ItemCartRequest item)
         {
             try
-            {
+            { 
                 ItemCart aux = new ItemCart
                 {
                     ProductId = item.ProductId,
