@@ -52,20 +52,28 @@ namespace Kombox.API.Controllers
 
         }
 
-        [HttpGet("{id}")]
-        
+        [HttpGet("GetShoppingCartByUserID/{id}")]
         public ActionResult GetShoppinCartByUserId(int id)
         {
             try
             {
-                var cart = _unitOfWork.itemCartRepository.GetAll(x=>x.ShoppingCartId == id, includeProperties:"Product");
-
-                return Ok(new
+                var cart = _unitOfWork.itemCartRepository.GetAll(x => x.ShoppingCartId == id, includeProperties: "Product");
+                if (cart != null)
                 {
-                    status = true,
-                    Cart = cart,
-                    Message = "Cart save it successfully"
-                });
+                    return Ok(new
+                    {
+                        status = true,
+                        Cart = cart,
+                    });
+                }
+                else
+                {
+                    return BadRequest(new
+                    {
+                        status = false,
+                        message = "Not Found any one cart"
+                    });
+                }
             }
             catch (Exception ex)
             {
@@ -90,6 +98,9 @@ namespace Kombox.API.Controllers
                     count = item.count,
                     ShoppingCartId = item.ShoppingCartId,
                 };
+
+                // pendiente el acutalizar la cantidad de del producto del item cart
+
                 _unitOfWork.itemCartRepository.Add(aux);
                 _unitOfWork.Save();
                 return Ok(new
@@ -98,7 +109,8 @@ namespace Kombox.API.Controllers
                     item = item,
                     Message = "Cart save it successfully"
                 });
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(new
                 {
