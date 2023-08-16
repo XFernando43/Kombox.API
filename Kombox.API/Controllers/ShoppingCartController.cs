@@ -28,7 +28,7 @@ namespace Kombox.API.Controllers
                     return Ok(new
                     {
                         status = true,
-                        Message = "not payments do it alredy!!!"
+                        Message = "Not payments do it alredy!!!"
                     });
                 }
                 else
