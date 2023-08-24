@@ -105,6 +105,7 @@ namespace Kombox.API.Controllers
                 // pendiente el acutalizar la cantidad de del producto del item cart d
                 // pendiente el acutalizar la cantidad de del producto del item cart d
                 // pendiente el acutalizar la cantidad de del producto del item cart d
+                // pendiente el acutalizar la cantidad de del producto del item cart d
 
                 _unitOfWork.itemCartRepository.Add(aux);
                 _unitOfWork.Save();
