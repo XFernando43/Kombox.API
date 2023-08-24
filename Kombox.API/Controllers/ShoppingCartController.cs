@@ -99,7 +99,7 @@ namespace Kombox.API.Controllers
                     ShoppingCartId = item.ShoppingCartId,
                 };
 
-                // pendiente el acutalizar la cantidad de del producto del item cart deasd   dasda  das   dasd  wsda
+                // pendiente el acutalizar la cantidad de del producto del item cart 
 
                 _unitOfWork.itemCartRepository.Add(aux);
                 _unitOfWork.Save();
