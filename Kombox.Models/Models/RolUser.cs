@@ -15,3 +15,5 @@ namespace Kombox.Models.Models
         List<Usuario>? usuarios { get; set; }
     }
 }
+
+//jijijiji
